@@ -39,7 +39,7 @@ pure_content = ''.join(split_content)
 # 內文斷詞
 
 jieba.set_dictionary('dict.txt.big')
-seg_list = jieba.cut(content_text, cut_all=False)
+seg_list = jieba.cut(pure_content, cut_all=False)
 cut_words = ''.join(seg_list)
 print(cut_words)
 
