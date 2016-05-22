@@ -8,7 +8,7 @@ import jieba
 import re
 
 # 讀取網頁
-response = requests.get("http://www.president.gov.tw/Default.aspx?tabid=131&itemid=36476")
+response = requests.get("http://www.president.gov.tw/Default.aspx?tabid=131&itemid=34161")
 soup = BeautifulSoup(response.text)
 
 # 標題與日期萃取
@@ -33,6 +33,9 @@ content_text = content_text.strip('這裡有一段影音')
 # 去除講稿前面的文字
 split_content = re.split(r'全文[\u2E80-\u9FFF]+：', content_text)
 del split_content[0]
+if len(split_content) == 0:
+    split_content = re.split(r'全文[\u2E80-\u9FFF]+:', content_text)
+    del split_content[0]
 # 真正的講稿內容
 pure_content = ''.join(split_content)
 
@@ -40,11 +43,10 @@ pure_content = ''.join(split_content)
 
 jieba.set_dictionary('dict.txt.big')
 seg_list = jieba.cut(pure_content, cut_all=False)
-cut_words = ''.join(seg_list)
-print(cut_words)
+words = ''.join(seg_list)
 
 # 輸出斷詞後檔案
 file = open(str(date_output) + "_" + str(title) + ".txt", 'w', encoding='UTF-8')
-file.write(cut_words)
+file.write(words)
 file.close()
 

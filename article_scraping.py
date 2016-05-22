@@ -42,6 +42,10 @@ for link in address_list:
         # 去除講稿前面的文字
         split_content = re.split(r'全文[\u2E80-\u9FFF]*：', content_text)
         del split_content[0]
+        # 有的是半形帽冒號
+        if len(split_content) == 0:
+            split_content = re.split(r'全文[\u2E80-\u9FFF]+:', content_text)
+            del split_content[0]
         # 真正的講稿內容
         pure_content = ''.join(split_content)
 
