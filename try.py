@@ -8,7 +8,7 @@ import jieba
 import re
 
 # 讀取網頁
-response = requests.get("http://www.president.gov.tw/Default.aspx?tabid=131&itemid=36068")
+response = requests.get("http://www.president.gov.tw/Default.aspx?tabid=131&itemid=29291")
 soup = BeautifulSoup(response.text)
 
 # 標題與日期萃取
@@ -31,8 +31,8 @@ for script in soup.find_all('script', {'id': 'dstb-id'}):
 # 內文萃取
 content = soup.select('.newscontent')[0]
 content_text = content.text
-content_text = re.sub(r'[\f\t\r\n　、。，？！；「」《》(),（）]', '', content_text)  # 去除雜訊
-content_text = content_text.strip('這裡有一段影音')
+content_text = re.sub(r'[\u0020\u00A0\f\t\r\n　、。，？！；「」《》(),（）]', '', content_text)  # 去除雜訊
+content_text = re.sub(r'這裡有一段影音', '', content_text)
 # 去除講稿前面的文字
 split_content = re.split(r'全文[\u2E80-\uFFEF]*[\w]*：', content_text)
 del split_content[0]
@@ -42,9 +42,9 @@ if len(split_content) == 0:
     del split_content[0]
 # 真正的講稿內容
 pure_content = ''.join(split_content)
+pure_content = re.sub(r'[：:]', '', content_text)  # 分出講稿後，冒號沒用了，可以去除
 
 # 內文斷詞
-
 jieba.set_dictionary('dict.txt.big')
 seg_list = jieba.cut(pure_content, cut_all=False)
 words = ''.join(seg_list)
