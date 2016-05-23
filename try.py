@@ -42,7 +42,7 @@ if len(split_content) == 0:
     del split_content[0]
 # 真正的講稿內容
 pure_content = ''.join(split_content)
-pure_content = re.sub(r'[：:]', '', content_text)  # 分出講稿後，冒號沒用了，可以去除
+pure_content = re.sub(r'[：:]', '', pure_content)  # 分出講稿後，冒號沒用了，可以去除
 
 # 內文斷詞
 jieba.set_dictionary('dict.txt.big')
