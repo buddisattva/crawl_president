@@ -66,4 +66,4 @@ for link in address_list:
     except ConnectionError:
         print('幹')
 
-print('好了')
+print('好了!')
