@@ -34,23 +34,25 @@ for link in address_list:
         date_input = date_input[1].strip('年').split('月')
         date_output = date(year, int(date_input[0]), int(date_input[1])).strftime('%Y-%m-%d')
 
+        # 去除text/javascript部分，以免被誤認成text擷取成內文
+        for script in soup.find_all('script', {'id': 'dstb-id'}):
+            script.decompose()
         # 內文萃取
         content = soup.select('.newscontent')[0]
         content_text = content.text
         content_text = re.sub(r'[\t\r\n　、。，？！；「」《》(),（）]', '', content_text)  # 去除雜訊
         content_text = content_text.strip('這裡有一段影音')
         # 去除講稿前面的文字
-        split_content = re.split(r'全文[\u2E80-\u9FFF]*：', content_text)
+        split_content = re.split(r'全文[\u2E80-\uFFEF]*[\w]*：', content_text)
         del split_content[0]
         # 有的是半形帽冒號
         if len(split_content) == 0:
-            split_content = re.split(r'全文[\u2E80-\u9FFF]+:', content_text)
+            split_content = re.split(r'全文[\u2E80-\uFFEF]*[\w]*:', content_text)
             del split_content[0]
         # 真正的講稿內容
         pure_content = ''.join(split_content)
 
         # 內文斷詞
-
         jieba.set_dictionary('dict.txt.big')
         seg_list = jieba.cut(pure_content, cut_all=False)
         words = ' '.join(seg_list)
