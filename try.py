@@ -8,7 +8,7 @@ import jieba
 import re
 
 # 讀取網頁
-response = requests.get("http://www.president.gov.tw/Default.aspx?tabid=131&itemid=29291")
+response = requests.get("http://www.president.gov.tw/Default.aspx?tabid=131&itemid=13752")
 soup = BeautifulSoup(response.text)
 
 # 標題與日期萃取
@@ -34,11 +34,11 @@ content_text = content.text
 content_text = re.sub(r'[\u0020\u00A0\f\t\r\n　、。，？！；「」《》(),（）]', '', content_text)  # 去除雜訊
 content_text = re.sub(r'這裡有一段影音', '', content_text)
 # 去除講稿前面的文字
-split_content = re.split(r'全文[\u2E80-\uFFEF]*[\w]*：', content_text)
+split_content = re.split(r'全文[\u2E80-\uFF19\uFF1B-\uFFEF]*[\w]*：', content_text)
 del split_content[0]
 # 有的是半形帽冒號
 if len(split_content) == 0:
-    split_content = re.split(r'全文[\u2E80-\uFFEF]*[\w]*:', content_text)
+    split_content = re.split(r'全文[\u2E80-\uFF19\uFF1B-\uFFEF]*[\w]*:', content_text)
     del split_content[0]
 # 真正的講稿內容
 pure_content = ''.join(split_content)
