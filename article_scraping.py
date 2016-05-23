@@ -40,7 +40,7 @@ for link in address_list:
         # 內文萃取
         content = soup.select('.newscontent')[0]
         content_text = content.text
-        content_text = re.sub(r'[\t\r\n　、。，？！；「」《》(),（）]', '', content_text)  # 去除雜訊
+        content_text = re.sub(r'[\f\t\r\n　、。，？！；「」《》(),（）]', '', content_text)  # 去除雜訊
         content_text = content_text.strip('這裡有一段影音')
         # 去除講稿前面的文字
         split_content = re.split(r'全文[\u2E80-\uFFEF]*[\w]*：', content_text)
