@@ -8,7 +8,7 @@ import jieba
 import re
 
 # 讀取網址檔案
-with open("世界和平日_address_list.txt") as f:
+with open("新春團拜_address_list.txt") as f:
     address_list = f.read().splitlines()
 
 for link in address_list:
@@ -40,27 +40,26 @@ for link in address_list:
         # 內文萃取
         content = soup.select('.newscontent')[0]
         content_text = content.text
-        content_text = re.sub(r'[\u0020\u00A0\f\t\r\n　、。，？！；「」《》(),（）]', '', content_text)  # 去除雜訊
+        content_text = re.sub(r'[\u0020\u00A0\f\t\r\n　、。，？！；：:「」《》(),（）]', '', content_text)  # 去除雜訊
         content_text = re.sub(r'這裡有一段影音', '', content_text)
-        # 去除講稿前面的文字
-        split_content = re.split(r'全文[\u2E80-\uFF19\uFF1B-\uFFEF]*[\w]*：', content_text)
-        del split_content[0]
-        # 有的是半形帽冒號
-        if len(split_content) == 0:
-            split_content = re.split(r'全文[\u2E80-\uFF19\uFF1B-\uFFEF]*[\w]*:', content_text)
-            del split_content[0]
-        # 真正的講稿內容
-        pure_content = ''.join(split_content)
-        pure_content = re.sub(r'[：:]', '', pure_content)  # 分出講稿後，冒號沒用了，可以去除
+        # # 去除講稿前面的文字
+        # split_content = re.split(r'全文[\u2E80-\uFF19\uFF1B-\uFFEF]*[\w]*：', content_text)
+        # del split_content[0]
+        # # 有的是半形帽冒號
+        # if len(split_content) == 0:
+        #     split_content = re.split(r'全文[\u2E80-\uFF19\uFF1B-\uFFEF]*[\w]*:', content_text)
+        #     del split_content[0]
+        # # 真正的講稿內容
+        # pure_content = ''.join(split_content)
+        # pure_content = re.sub(r'[：:]', '', pure_content)  # 分出講稿後，冒號沒用了，可以去除
 
         # 內文斷詞
         jieba.set_dictionary('dict.txt.big')
-        jieba.add_word('世界和平日')
-        seg_list = jieba.cut(pure_content, cut_all=False)
+        seg_list = jieba.cut(content_text, cut_all=False)
         words = ' '.join(seg_list)
 
         # 輸出斷詞後檔案
-        file = open("世界和平日/" + str(date_output) + "_" + str(title) + ".txt", 'w', encoding = 'UTF-8')
+        file = open("新春團拜/" + str(date_output) + "_" + str(title) + ".txt", 'w', encoding = 'UTF-8')
         file.write(words)
         file.close()
 
